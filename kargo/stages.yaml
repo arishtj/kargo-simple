@@ -14,11 +14,11 @@ spec:
       direct: true
   promotionMechanisms:
     gitRepoUpdates:
-    - repoURL: https://github.com/akuity/kargo-simple.git
+    - repoURL: https://github.com/arishtj/kargo-simple.git
       writeBranch: main
       kustomize:
         images:
-        - image: ghcr.io/akuity/guestbook
+        - image: ghcr.io/arishtj/guestbook
           path: env/dev
     # If you have an Argo CD application that should be synced after the git repo is updated,
     # uncomment the following lines and specify the app name. Repeat for the other Stages.
@@ -44,11 +44,11 @@ spec:
         - dev
   promotionMechanisms:
     gitRepoUpdates:
-    - repoURL: https://github.com/akuity/kargo-simple.git
+    - repoURL: https://github.com/arishtj/kargo-simple.git
       writeBranch: main
       kustomize:
         images:
-        - image: ghcr.io/akuity/guestbook
+        - image: ghcr.io/arishtj/guestbook
           path: env/staging
     # argoCDAppUpdates:
     # - appName: guestbook-staging
@@ -72,11 +72,11 @@ spec:
         - staging
   promotionMechanisms:
     gitRepoUpdates:
-    - repoURL: https://github.com/akuity/kargo-simple.git
+    - repoURL: https://github.com/arishtj/kargo-simple.git
       writeBranch: main
       kustomize:
         images:
-        - image: ghcr.io/akuity/guestbook
+        - image: ghcr.io/arishtj/guestbook
           path: env/prod
       pullRequest: {}
     # argoCDAppUpdates:
