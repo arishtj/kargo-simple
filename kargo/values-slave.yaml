@@ -1,0 +1,12 @@
+api:
+  adminAccount:
+    passwordHash: '$2a$10$Zrhhie4vLz5ygtVSaif6o.qN36jgs6vjtMBdM6yrU1FOeiAAMMxOm'
+    password: admin
+    tokenSigningKey: iwishtowashmyirishwristwatch
+  argocd:
+    urls:
+      "distributed": https://argocd-server.argocd.svc
+kubeconfigSecrets:
+  kargo: central-mgmt-kubeconfig
+controller:
+  shardName: distributed

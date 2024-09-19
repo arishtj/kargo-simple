@@ -1,0 +1,17 @@
+replicaCount: 1
+revisionHistoryLimit: 3
+
+image:
+  repository: ghcr.io/arishtj/guestbook
+  tag: "v0.0.1"
+  pullPolicy: IfNotPresent
+
+#namespace: guestbook-simple
+
+service:
+  type: ClusterIP
+  port: 80
+
+containerPort: 3000
+
+resources: {}

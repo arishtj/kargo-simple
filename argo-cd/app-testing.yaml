@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: kargo-demo
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - stage: testing
+  template:
+    metadata:
+      name: guestbook-{{stage}}
+      annotations:
+        kargo.akuity.io/authorized-stage: kargo-demo:{{stage}}
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/arishtj/kargo-simple.git
+        targetRevision: HEAD
+        path: guestbook-chart
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: argo-app
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+        automated: {}

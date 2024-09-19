@@ -1,7 +1,7 @@
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
-  name: dev
+  name: testing
   namespace: kargo-simple
   annotations:
     kargo.akuity.io/color: red
@@ -14,16 +14,19 @@ spec:
       direct: true
   promotionMechanisms:
     gitRepoUpdates:
-    - repoURL: https://github.com/arishtj/kargo-simple.git
-      writeBranch: main
-      kustomize:
+    - helm:
         images:
-        - image: ghcr.io/arishtj/guestbook
-          path: env/dev
+          - image: ghcr.io/arishtj/guestbook
+            key: image.tag
+            value: Tag
+            valuesFilePath: guestbook-chart/envs/testing.yaml
+      readBranch: HEAD
+      writeBranch: HEAD
+      repoURL: https://github.com/arishtj/kargo-simple.git
     # If you have an Argo CD application that should be synced after the git repo is updated,
     # uncomment the following lines and specify the app name. Repeat for the other Stages.
-    # argoCDAppUpdates:
-    # - appName: guestbook-dev
+    argoCDAppUpdates:
+     - appName: guestbook-testing
 
 ---
 apiVersion: kargo.akuity.io/v1alpha1
@@ -41,15 +44,18 @@ spec:
     sources:
       direct: false
       stages:
-        - dev
+        - testing
   promotionMechanisms:
     gitRepoUpdates:
-    - repoURL: https://github.com/arishtj/kargo-simple.git
-      writeBranch: main
-      kustomize:
-        images:
-        - image: ghcr.io/arishtj/guestbook
-          path: env/staging
+      - helm:
+          images:
+            - image: ghcr.io/arishtj/guestbook
+              key: image.tag
+              value: Tag
+              valuesFilePath: guestbook-chart/envs/staging.yaml
+        readBranch: HEAD
+        writeBranch: HEAD
+        repoURL: https://github.com/arishtj/kargo-simple.git
     # argoCDAppUpdates:
     # - appName: guestbook-staging
 
@@ -57,7 +63,7 @@ spec:
 apiVersion: kargo.akuity.io/v1alpha1
 kind: Stage
 metadata:
-  name: prod
+  name: production
   namespace: kargo-simple
   annotations:
     kargo.akuity.io/color: violet
@@ -72,12 +78,14 @@ spec:
         - staging
   promotionMechanisms:
     gitRepoUpdates:
-    - repoURL: https://github.com/arishtj/kargo-simple.git
-      writeBranch: main
-      kustomize:
-        images:
-        - image: ghcr.io/arishtj/guestbook
-          path: env/prod
-      pullRequest: {}
+      - helm:
+          images:
+            - image: ghcr.io/arishtj/guestbook
+              key: image.tag
+              value: Tag
+              valuesFilePath: guestbook-chart/envs/production.yaml
+        readBranch: HEAD
+        writeBranch: HEAD
+        repoURL: https://github.com/arishtj/kargo-simple.git
     # argoCDAppUpdates:
     # - appName: guestbook-prod
