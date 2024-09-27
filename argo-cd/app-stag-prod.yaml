@@ -13,10 +13,16 @@ spec:
     metadata:
       name: guestbook-{{stage}}
       annotations:
-        kargo.akuity.io/authorized-stage: kargo-demo:{{stage}}
+        kargo.akuity.io/authorized-stage: kargo-simple:{{stage}}
     spec:
       project: default
       source:
+        helm:
+          valueFiles:
+            - envs/{{stage}}.yaml
+#          parameters:
+#            - name: image.tag
+#              value: v0.0.1
         repoURL: https://github.com/arishtj/kargo-simple.git
         targetRevision: HEAD
         path: guestbook-chart
@@ -26,4 +32,4 @@ spec:
       syncPolicy:
         syncOptions:
           - CreateNamespace=true
-        automated: {}
+#        automated: {}

@@ -30,18 +30,12 @@ install_cert_manager() {
 }
 
 install_argocd() {
-  helm upgrade --install argocd argo-cd \
-    --repo https://argoproj.github.io/argo-helm \
-    --version $argo_cd_chart_version \
-    --namespace argocd \
-    --create-namespace \
-    --set 'configs.secret.argocdServerAdminPassword=$2a$10$5vm8wXaSdbuff0m9l21JdevzXBzJFPCi8sy6OOnpZMAG.fOXL7jvO' \
-    --set dex.enabled=false \
-    --set notifications.enabled=false \
-    --set server.extensions.enabled=true \
-    --set 'server.extensions.contents[0].name=argo-rollouts' \
-    --set 'server.extensions.contents[0].url=https://github.com/argoproj-labs/rollout-extension/releases/download/v0.3.3/extension.tar' \
-    --wait
+  helm upgrade --install argocd argo/argo-cd  --version $argo_cd_chart_version \
+  --namespace argocd --create-namespace  \
+  --set 'configs.secret.argocdServerAdminPassword=$2a$10$5vm8wXaSdbuff0m9l21JdevzXBzJFPCi8sy6OOnpZMAG.fOXL7jvO'  \
+  --set dex.enabled=false --set notifications.enabled=false --set server.extensions.enabled=true \
+  --set 'server.extensions.contents[0].name=argo-rollouts' \
+  --set 'server.extensions.contents[0].url=https://github.com/argoproj-labs/rollout-extension/releases/download/v0.3.3/extension.tar' --wait
 }
 
 install_argo_rollouts() {
@@ -53,6 +47,7 @@ install_argo_rollouts() {
     --wait
 }
 
+# shellcheck disable=SC2120
 prepare_kubeconfig_for_kargo() {
   path=$1
   cp "$HOME/.kube/config" "$path"
@@ -62,7 +57,6 @@ prepare_kubeconfig_for_kargo() {
   kubectx kind-distributed
   kubectl create namespace kargo || true
   kubectl create secret generic central-mgmt-kubeconfig --from-file=kubeconfig.yaml="$path" -n kargo
-
 }
 
 install_kargo() {
@@ -95,9 +89,9 @@ install_argocd
 install_argo_rollouts
 install_kargo "central-mgmt"
 
-create_cluster "distributed"
-install_cert_manager
-install_argocd
-install_argo_rollouts
-prepare_kubeconfig_for_kargo "somepath/where/u/wanna/save/kubeconfig"
-install_kargo "distributed"
+#create_cluster "distributed"
+#install_cert_manager
+#install_argocd
+#install_argo_rollouts
+#prepare_kubeconfig_for_kargo "somepath/where/u/wanna/save/kubeconfig"
+#install_kargo "distributed"

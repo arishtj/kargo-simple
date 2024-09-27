@@ -6,7 +6,7 @@ api:
   argocd:
     urls:
       "distributed": https://argocd-server.argocd.svc
-kubeconfigSecrets:
-  kargo: central-mgmt-kubeconfig
-controller:
-  shardName: distributed
+#kubeconfigSecrets:
+#  kargo: central-mgmt-kubeconfig
+#controller:
+#  shardName: distributed
